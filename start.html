@@ -1,0 +1,128 @@
+<html>
+    <head>
+        <script src = "mark.min.js"></script>
+        <style>
+            mark {
+                background: blue;
+                color: whitesmoke;
+            }
+            body {
+                background-color: black;
+                color:floralwhite;
+                font-style: normal;
+            }
+            div#d1 {
+                margin-top: 10%
+            }
+            div {
+                text-align: center;
+                font-size: x-large;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="d1">Start</div>
+        <div id="d2">Scores</div>
+        <div id="d3">Help</div>
+        <div id="d4">About</div>
+    </body>
+    <script>
+        if (typeof new_id == 'undefined') {
+            let new_id
+        }
+        if (typeof old_id == 'undefined') {
+            let old_id;
+        }
+        function mark_str(new_id, old_id = "") {
+            let context, instance;
+            if (old_id != "") {
+                context = document.getElementById(old_id);
+                instance = new Mark(context);
+                instance.unmark(); 
+            }
+            context = document.getElementById(new_id);
+            instance = new Mark(context);
+            switch(new_id) {
+                case "d1":
+                instance.markRanges([{start:0, length:5}]);
+                break;
+                case "d2":
+                instance.markRanges([{start:0, length:6}]);
+                break;
+                case "d3":
+                instance.markRanges([{start:0, length:4}]);
+                break;
+                case "d4":
+                instance.markRanges([{start:0, length:5}]);
+                break;
+            }
+        }
+        function init() {
+            new_id = "d1";
+            old_id = "";
+        }
+        init();
+        mark_str(new_id, old_id);
+        window.onkeydown = function(event) {
+            switch (event.keyCode) {
+                case 38:
+                    switch(new_id) {
+                        case "d1":
+                            old_id = "d1";
+                            new_id = "d4";
+                        break;
+                        case "d2":
+                            old_id = "d2";
+                            new_id = "d1";
+                        break;
+                        case "d3":
+                            old_id = "d3";
+                            new_id = "d2";
+                        break;
+                        case "d4":
+                            old_id = "d4";
+                            new_id = "d3";
+                        break;
+                    }
+                    mark_str(new_id, old_id);
+                break;
+                case 40:
+                switch(new_id) {
+                        case "d1":
+                            old_id = "d1";
+                            new_id = "d2";
+                        break;
+                        case "d2":
+                            old_id = "d2";
+                            new_id = "d3";
+                        break;
+                        case "d3":
+                            old_id = "d3";
+                            new_id = "d4";
+                        break;
+                        case "d4":
+                            old_id = "d4";
+                            new_id = "d1";
+                        break;
+                    }
+                    mark_str(new_id, old_id);
+                    break;
+                case 13:
+                    if (new_id == "d1") {
+                        let xhr = new XMLHttpRequest();
+                        xhr.open('GET', '/game', true);
+                        xhr.onreadystatechange = function() {
+                            if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+                                let txt = xhr.responseText;
+                                document.clear();
+                                document.close();
+                                document.write(txt);
+                            }
+                        }
+                        xhr.send();
+                    }
+                break;
+            }
+        }
+    </script>
+</html>
