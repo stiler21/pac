@@ -4,11 +4,13 @@ let bodyParser = require('body-parser');
 let express = require('express');
 let app = express();
 let port = 8080;
-
+//abc
+//asdafasfsa
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
 app.get('/', function(req, res) {
+    var c = 8;
     fs.readFile('start.html', {encoding: 'utf8'}, function(err, data) {
         if (!err) {
             res.end(data);
